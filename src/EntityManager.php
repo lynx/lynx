@@ -32,6 +32,20 @@ class EntityManager
         return $this->connection->createQueryBuilder();
     }
 
+    /**
+     * @param $className
+     * @param $id
+     * @return null|object
+     */
+    public function find($className, $id)
+    {
+        return $this->getRepository($className)->getOne($id);
+    }
+
+    /**
+     * @param $name
+     * @return Repository
+     */
     public function getRepository($name)
     {
         if (isset($this->repositories[$name])) {
