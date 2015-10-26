@@ -32,6 +32,7 @@ class EntityManager
     public function __construct(Connection $connection, Cache $cache)
     {
         $this->connection = $connection;
+        $this->cache = $cache;
     }
 
     /**
@@ -78,5 +79,13 @@ class EntityManager
     {
         $instantiator = new \Doctrine\Instantiator\Instantiator();
         return $instantiator->instantiate($className);
+    }
+
+    /**
+     * @return Cache
+     */
+    public function getCache()
+    {
+        return $this->cache;
     }
 }
