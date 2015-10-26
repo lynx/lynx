@@ -29,11 +29,11 @@ class Repository
      */
     public function getOne($id)
     {
-        $name = $this->name;
+        $className = $this->name;
 
         $queryResult = $this->em->createQueryBuilder()
             ->select('*')
-            ->from($name::TABLE_NAME)
+            ->from($className::TABLE_NAME)
             ->where('id = :id')
             ->setParameter('id', $id)
             ->setMaxResults(1)
@@ -44,7 +44,10 @@ class Repository
             return null;
         }
 
-        $entity = (new \ReflectionClass($name))->newInstanceWithoutConstructor();
+        $entity = $this->em->getObject($className);
+
+
+
         foreach ($queryResult as $key => $value) {
             $entity->{$key} = $value;
         }

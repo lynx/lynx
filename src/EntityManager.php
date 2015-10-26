@@ -50,8 +50,18 @@ class EntityManager
     {
         if (isset($this->repositories[$name])) {
             return $this->repositories[$name];
-        }
+        }   
 
         return $this->repositories[$name] = new Repository($this, $name);
+    }
+
+    /**
+     * @param $className
+     * @return object
+     */
+    public function getObject($className)
+    {
+        $instantiator = new \Doctrine\Instantiator\Instantiator();
+        return $instantiator->instantiate($className);
     }
 }
