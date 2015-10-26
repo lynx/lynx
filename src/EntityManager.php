@@ -43,16 +43,21 @@ class EntityManager
     }
 
     /**
-     * @param $name
+     * @param $className
      * @return Repository
      */
-    public function getRepository($name)
+    public function getRepository($className)
     {
-        if (isset($this->repositories[$name])) {
-            return $this->repositories[$name];
-        }   
+        if (isset($this->repositories[$className])) {
+            return $this->repositories[$className];
+        }
 
-        return $this->repositories[$name] = new Repository($this, $name);
+        if (class_exists($className . 'Repository', true)) {
+            $class = $className . 'Repository';
+            return $this->repositories[$className] = new $class($this, $className);
+        }
+
+        return $this->repositories[$className] = new Repository($this, $className);
     }
 
     /**
