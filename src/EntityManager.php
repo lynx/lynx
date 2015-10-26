@@ -5,6 +5,7 @@
 
 namespace Lynx;
 
+use Doctrine\Common\Cache\Cache;
 use Doctrine\DBAL\Connection;
 
 class EntityManager
@@ -15,11 +16,20 @@ class EntityManager
     protected $connection;
 
     /**
+     * @var Cache
+     */
+    protected $cache;
+
+    /**
      * @var Repository[]
      */
     protected $repositories;
 
-    public function __construct(\Doctrine\DBAL\Connection $connection)
+    /**
+     * @param Connection $connection
+     * @param Cache $cache
+     */
+    public function __construct(Connection $connection, Cache $cache)
     {
         $this->connection = $connection;
     }
