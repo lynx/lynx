@@ -46,8 +46,6 @@ class Repository
 
         $entity = $this->em->getObject($className);
 
-
-
         foreach ($queryResult as $key => $value) {
             $entity->{$key} = $value;
         }
