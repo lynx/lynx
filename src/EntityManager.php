@@ -7,6 +7,7 @@ namespace Lynx;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Configuration;
 
 class EntityManager
 {
@@ -26,13 +27,33 @@ class EntityManager
     protected $repositories;
 
     /**
+     * @var ClassMetadataFactory
+     */
+    protected $metadataFactory;
+
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
      * @param Connection $connection
      * @param Cache $cache
      */
-    public function __construct(Connection $connection, Cache $cache)
+    public function __construct(Connection $connection, Configuration $configuration)
     {
         $this->connection = $connection;
-        $this->cache = $cache;
+        $this->configuration = $configuration;
+        $this->cache = $configuration->getResultCacheImpl();
+        $this->metadataFactory = new ClassMetadataFactory($this);
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
     }
 
     /**
@@ -87,5 +108,21 @@ class EntityManager
     public function getCache()
     {
         return $this->cache;
+    }
+
+    /**
+     * @return ClassMetadataFactory
+     */
+    public function getMetadataFactory()
+    {
+        return $this->metadataFactory;
+    }
+
+    /**
+     * @return Connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }
