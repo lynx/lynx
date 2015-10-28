@@ -55,9 +55,6 @@ class Repository
 
         foreach ($queryResult as $key => $value) {
             switch ($metaData->getTypeOfField($key)) {
-                case 'integer':
-                    $entity->{$key} = (int) $value;
-                    break;
                 case 'float':
                     $entity->{$key} = (float) $value;
                     break;
@@ -67,16 +64,15 @@ class Repository
                 case 'integer[]':
                     $entity->{$key} = new IntegerArray($value);
                     break;
-                case 'point':
-                    $type = \Doctrine\DBAL\Types\Type::getType('geometry');
-                    $entity->{$key} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
-                    break;
-                case 'composite':
-                    $type = '\BlaBla\DAO\Type\\' . $metaData->fieldMappings[$key]['columnName'];
-                    $entity->{$key} = new $type($value);
-                    break;
                 default:
-                    $entity->{$key} = $value;
+                    $type = $metaData->getTypeOfField($key);
+                    if (\Doctrine\DBAL\Types\Type::hasType($type)) {
+                        $type = \Doctrine\DBAL\Types\Type::getType($type);
+                        $entity->{$key} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
+                    } else {
+                        throw new \RuntimeException('Unsupported type: '. $type . ' for ' . $key);
+//                        $entity->{$key} = $value;
+                    }
                     break;
             }
         }
