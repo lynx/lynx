@@ -8,6 +8,7 @@ namespace Lynx;
 use BlaBla\DAO\Type\Hstore;
 use BlaBla\DAO\Type\IntegerArray;
 use BlaBla\DAO\Type\Point;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 class Repository
 {
@@ -52,7 +53,18 @@ class Repository
         }
 
         $entity = $this->em->getObject($className);
+        return $this->hydrate($entity, $queryResult, $metaData);
+    }
 
+    /**
+     * @param object $entity
+     * @param array $queryResult
+     * @param ClassMetadata $metaData
+     * @return mixed
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function hydrate($entity, $queryResult, ClassMetadata $metaData)
+    {
         foreach ($queryResult as $key => $value) {
             switch ($metaData->getTypeOfField($key)) {
                 case 'float':
