@@ -8,7 +8,7 @@ namespace Lynx;
 class CachedRepository extends Repository
 {
     /**
-     * @param $id
+     * @param integer $id
      * @return object|null
      */
     public function getOne($id)
@@ -21,6 +21,46 @@ class CachedRepository extends Repository
         }
 
         $result = parent::getOne($id);
+        if ($result) {
+            $cache->save($cacheKey, $result, 60*10);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array|mixed|null
+     */
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        $cache = $this->em->getCache();
+        $cacheKey = $this->name . '-';
+
+        if ($criteria) {
+            $cacheKey .= implode(',', $criteria);
+        }
+
+        if ($orderBy) {
+            $cacheKey .= implode(',', $orderBy);
+        }
+
+        if ($limit) {
+            $cacheKey .= $limit;
+        }
+
+        if ($offset) {
+            $cacheKey .= $offset;
+        }
+
+        if ($cache->contains($cacheKey)) {
+            return $cache->fetch($cacheKey);
+        }
+
+        $result = parent::findBy($criteria, $orderBy, $limit, $offset);
         if ($result) {
             $cache->save($cacheKey, $result, 60*10);
         }
