@@ -56,6 +56,42 @@ class Repository
         return $this->hydrate($entity, $queryResult, $metaData);
     }
 
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        $className = $this->name;
+
+        $metaData = $this->em->getMetadataFactory()
+            ->getMetadataFor($className);
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('*')
+            ->from($metaData->table['name']);
+
+        if ($orderBy) {
+            foreach ($orderBy as $field => $type) {
+                $qb->orderBy($field, $type);
+            }
+        }
+
+        $queryResult = $qb->setMaxResults($limit)
+            ->execute()
+            ->fetchAll();
+
+        if (!$queryResult) {
+            return null;
+        }
+
+        $result = [];
+
+        $entity = $this->em->getObject($className);
+
+        foreach ($queryResult as $row) {
+            $result[] = $this->hydrate(clone $entity, $row, $metaData);
+        }
+
+        return $result;
+    }
+
     /**
      * @param object $entity
      * @param array $queryResult
