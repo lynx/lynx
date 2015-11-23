@@ -100,15 +100,15 @@ class Repository
      */
     public function hydrate($entity, $queryResult, ClassMetadata $metaData)
     {
-        foreach ($queryResult as $key => $value) {
-            $fieldName = $metaData->fieldNames[$key];
+        foreach ($queryResult as $columnName => $value) {
+            $fieldName = $metaData->getFieldForColumn($columnName);
             $type = $metaData->getTypeOfField($fieldName);
 
             if (Type::hasType($type)) {
                 $type = Type::getType($type);
                 $entity->{$fieldName} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
             } else {
-                throw new RuntimeException('Unsupported type: '. $type . ' for ' . $key);
+                throw new RuntimeException('Unsupported type: '. $type . ' for ' . $fieldName);
             }        }
 
         return $entity;
