@@ -13,7 +13,7 @@ namespace Model;
 class Group
 {
     /**
-     * @Id 
+     * @Id
      * @Column(type="integer", length=11, name="id")
      */
     public $id;
@@ -22,4 +22,4 @@ class Group
      * @Column(length=50, , name="name")
      */
     public $name;
-} 
+}

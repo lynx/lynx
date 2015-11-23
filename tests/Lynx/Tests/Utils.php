@@ -11,26 +11,26 @@ use Lynx\Stdlib\Events\Manager;
 
 class Utils
 {
-	public static function getConnection()
-	{
+    public static function getConnection()
+    {
         $eventsManager = new Manager();
 
         switch ($GLOBALS['db_type']) {
             case 'mysql':
             case 'pdo_mysql':
-                $driver = new DBAl\Driver\MySQL('mysql:host=localhost;dbname='.$GLOBALS['db_name'].';charset=UTF8', $GLOBALS['db_username'], $GLOBALS['db_password'], array());
+                //@todo
                 break;
             case 'pgsql':
             case 'pdo_pgsql':
-                $driver = new DBAl\Driver\PgSQL('pgsql:host=localhost;dbname='.$GLOBALS['db_name'], $GLOBALS['db_username'], $GLOBALS['db_password'], array());
+                //@todo
                 break;
             default:
                 throw new \InvalidArgumentException('Unsupported db type : ' . $GLOBALS['db_type']);
-                break;
+            break;
         }
 
-		$connection = new DBAL\Connection(['driver' => $driver], $eventsManager);
+        $connection = new DBAL\Connection(['driver' => $driver], $eventsManager);
 
-		return $connection;
-	}
+        return $connection;
+    }
 }

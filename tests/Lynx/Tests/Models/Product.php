@@ -37,4 +37,4 @@ class Product
     {
         $this->title = $title;
     }
-} 
+}

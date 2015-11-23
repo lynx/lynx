@@ -38,4 +38,4 @@ class User
      * @JoinColumn(name="group_id", referencedColumnName="id")
      */
     public $Group;
-} 
+}
