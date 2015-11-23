@@ -95,21 +95,25 @@ class Repository
      * @param object $entity
      * @param array $queryResult
      * @param ClassMetadata $metaData
-     * @return mixed
+     * @return object
      * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\ORM\Mapping\MappingException
      */
     public function hydrate($entity, $queryResult, ClassMetadata $metaData)
     {
+        $platform = $this->em->getConnection()->getDatabasePlatform();
+
         foreach ($queryResult as $columnName => $value) {
             $fieldName = $metaData->getFieldForColumn($columnName);
-            $type = $metaData->getTypeOfField($fieldName);
+            $typeForField = $metaData->getTypeOfField($fieldName);
 
-            if (Type::hasType($type)) {
-                $type = Type::getType($type);
-                $entity->{$fieldName} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
+            if ($typeForField) {
+                $type = Type::getType($typeForField);
+                $entity->{$fieldName} = $type->convertToPHPValue($value, $platform);
             } else {
-                throw new RuntimeException('Unsupported type: '. $type . ' for ' . $fieldName);
-            }        }
+                throw new RuntimeException('Unknown type for field ' . $fieldName);
+            }
+        }
 
         return $entity;
     }
