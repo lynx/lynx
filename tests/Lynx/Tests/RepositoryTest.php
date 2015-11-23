@@ -9,7 +9,7 @@ use Model\User;
 
 class RepositoryTest extends TestCase
 {
-    public function testGetOneMethodForUser()
+    public function testGetOneMethodSuccessForUserEntity()
     {
         /** @var \Lynx\Repository $repository */
         $repository = $this->em->getRepository('Model\User');
@@ -22,5 +22,12 @@ class RepositoryTest extends TestCase
         static::assertInternalType('string', $result->name);
         static::assertInstanceOf(\DateTime::class, $result->dateCreated);
         static::assertInternalType('integer', $result->group_id);
+    }
+
+    public function testGetOneMethodNotFoundForUserEntity()
+    {
+        /** @var \Lynx\Repository $repository */
+        $repository = $this->em->getRepository('Model\User');
+        static::assertNull($repository->getOne(100000000));
     }
 }
