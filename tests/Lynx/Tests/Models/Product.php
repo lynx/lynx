@@ -6,6 +6,9 @@
 
 namespace Model;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
+
 /**
  * @entity
  * @table(name="products")
@@ -13,7 +16,8 @@ namespace Model;
 class Product
 {
     /**
-     * @Id @Column(type="integer")
+     * @Id
+     * @Column(type="integer")
      */
     private $id;
 
