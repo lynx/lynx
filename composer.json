@@ -1,0 +1,14 @@
+{
+    "name": "lynx/lynx",
+    "description": "Awesome Mapper on top of DBAL/Doctrine2",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitry Patsura",
+            "email": "talk@dmtry.me"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
