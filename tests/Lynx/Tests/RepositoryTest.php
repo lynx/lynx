@@ -5,6 +5,7 @@
 
 namespace Lynx\Tests;
 
+use DateTime;
 use Model\User;
 
 class RepositoryTest extends TestCase
@@ -17,10 +18,10 @@ class RepositoryTest extends TestCase
         /** @var User $result */
         $result = $repository->getOne(1);
 
-        static::assertInstanceOf(\Model\User::class, $result);
+        static::assertInstanceOf(User::class, $result);
         static::assertInternalType('integer', $result->id);
         static::assertInternalType('string', $result->name);
-        static::assertInstanceOf(\DateTime::class, $result->dateCreated);
+        static::assertInstanceOf(DateTime::class, $result->dateCreated);
         static::assertInternalType('integer', $result->group_id);
     }
 
