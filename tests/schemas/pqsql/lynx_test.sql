@@ -113,10 +113,10 @@ INSERT INTO groups VALUES (2, 'Бета Пользователь');
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO users VALUES (1, 'Дмитрий', 1);
-INSERT INTO users VALUES (2, 'Илья', 0);
-INSERT INTO users VALUES (3, 'Денис', 0);
-INSERT INTO users VALUES (4, 'Елисей', 1);
+INSERT INTO users VALUES (1, NOW(), 'Дмитрий', 1);
+INSERT INTO users VALUES (2, NOW(), 'Илья', 0);
+INSERT INTO users VALUES (3, NOW(), 'Денис', 0);
+INSERT INTO users VALUES (4, NOW(), 'Елисей', 1);
 
 
 --
