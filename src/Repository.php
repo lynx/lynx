@@ -113,7 +113,9 @@ class Repository
                     $entity->{$key} = new IntegerArray($value);
                     break;
                 default:
-                    $type = $metaData->getTypeOfField($key);
+                    $fieldName = $metaData->fieldNames[$key];
+                    $type = $metaData->getTypeOfField($fieldName);
+
                     if (\Doctrine\DBAL\Types\Type::hasType($type)) {
                         $type = \Doctrine\DBAL\Types\Type::getType($type);
                         $entity->{$key} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
