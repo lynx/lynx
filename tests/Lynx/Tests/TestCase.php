@@ -6,26 +6,44 @@
 
 namespace Lynx\Tests;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\Configuration;
+use Lynx\EntityManager;
+
 class TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return string
-     * @throws \Exception
+     * @var EntityManager
      */
-    public function getDriverName()
+    protected $em;
+
+    public function setUp()
     {
-        switch ($GLOBALS['db_type']) {
-            case 'mysql':
-            case 'pdo_mysql':
-                return 'MySQL';
-                break;
-            case 'pgsql':
-            case 'pdo_pgsql':
-                return 'PgSQL';
-                break;
-            default:
-                throw new \Exception('Unknown driver: ' . $GLOBALS['db_type']);
-                break;
-        }
+        $configuration = new Configuration();
+        $configuration->setMetadataDriverImpl(
+            new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
+                new AnnotationReader(),
+                realpath(__DIR__ . '/Models/')
+            )
+        );
+
+        $connection = \Doctrine\DBAL\DriverManager::getConnection(
+            array(
+                'driver' => $GLOBALS['db_type'],
+                'host' => 'localhost',
+                'dbname' => $GLOBALS['db_name'],
+                'user' => $GLOBALS['db_username'],
+                'password' => $GLOBALS['db_password']
+            )
+        );
+
+        $configuration->setMetadataCacheImpl(
+            new \Doctrine\Common\Cache\ZendDataCache()
+        );
+
+        return new \Lynx\EntityManager(
+            $connection,
+            $configuration
+        );
     }
 }
