@@ -22,5 +22,10 @@
     "require-dev": {
         "phpunit/phpunit": "~4.8.18",
         "squizlabs/php_codesniffer": "~2.3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lynx\\": "src/"
+        }
     }
 }
