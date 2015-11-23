@@ -41,7 +41,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             new \Doctrine\Common\Cache\ZendDataCache()
         );
 
-        return new \Lynx\EntityManager(
+        $this->em = new \Lynx\EntityManager(
             $connection,
             $configuration
         );
