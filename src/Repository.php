@@ -8,7 +8,7 @@ namespace Lynx;
 use BlaBla\DAO\Type\Hstore;
 use BlaBla\DAO\Type\IntegerArray;
 use BlaBla\DAO\Type\Point;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Repository
 {
