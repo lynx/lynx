@@ -35,5 +35,5 @@ class User
     /**
      * @ORM\Column(type="integer", length=11, name="group_id")
      */
-    public $group_id;
+    public $groupId;
 }

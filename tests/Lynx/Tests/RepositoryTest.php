@@ -22,7 +22,7 @@ class RepositoryTest extends TestCase
         static::assertInternalType('integer', $result->id);
         static::assertInternalType('string', $result->name);
         static::assertInstanceOf(DateTime::class, $result->dateCreated);
-        static::assertInternalType('integer', $result->group_id);
+        static::assertInternalType('integer', $result->groupId);
     }
 
     public function testGetOneMethodNotFoundForUserEntity()
