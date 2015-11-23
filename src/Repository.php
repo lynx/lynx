@@ -5,10 +5,9 @@
 
 namespace Lynx;
 
-use BlaBla\DAO\Type\Hstore;
-use BlaBla\DAO\Type\IntegerArray;
-use BlaBla\DAO\Type\Point;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use RuntimeException;
 
 class Repository
 {
@@ -102,30 +101,15 @@ class Repository
     public function hydrate($entity, $queryResult, ClassMetadata $metaData)
     {
         foreach ($queryResult as $key => $value) {
-            switch ($metaData->getTypeOfField($key)) {
-                case 'float':
-                    $entity->{$key} = (float) $value;
-                    break;
-                case 'hstore':
-                    $entity->{$key} = new Hstore($value);
-                    break;
-                case 'integer[]':
-                    $entity->{$key} = new IntegerArray($value);
-                    break;
-                default:
-                    $fieldName = $metaData->fieldNames[$key];
-                    $type = $metaData->getTypeOfField($fieldName);
+            $fieldName = $metaData->fieldNames[$key];
+            $type = $metaData->getTypeOfField($fieldName);
 
-                    if (\Doctrine\DBAL\Types\Type::hasType($type)) {
-                        $type = \Doctrine\DBAL\Types\Type::getType($type);
-                        $entity->{$fieldName} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
-                    } else {
-                        throw new \RuntimeException('Unsupported type: '. $type . ' for ' . $key);
-//                        $entity->{$key} = $value;
-                    }
-                    break;
-            }
-        }
+            if (Type::hasType($type)) {
+                $type = Type::getType($type);
+                $entity->{$fieldName} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
+            } else {
+                throw new RuntimeException('Unsupported type: '. $type . ' for ' . $key);
+            }        }
 
         return $entity;
     }
