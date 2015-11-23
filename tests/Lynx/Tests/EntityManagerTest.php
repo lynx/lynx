@@ -10,6 +10,6 @@ class EntityManagerTest extends TestCase
     public function testGetRepositorySuccess()
     {
         $result = $this->em->getRepository('Model\User');
-        $this->assertInstanceOf(\Lynx\Repository::class, $result);
+        static::assertInstanceOf(\Lynx\Repository::class, $result);
     }
 }
