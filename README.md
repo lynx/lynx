@@ -1,5 +1,7 @@
 Lynx
 ====
+[![Build Status](https://travis-ci.org/lynx/lynx.svg?branch=master)](https://travis-ci.org/lynx/lynx)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lynx/lynx/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lynx/lynx/?branch=master)
 
 > An awesome Mapper on top of Doctrine 2 components
 
