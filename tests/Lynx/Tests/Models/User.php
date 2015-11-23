@@ -23,7 +23,7 @@ class User
     public $id;
 
     /**
-     * @ORM\Column(name="date_created", type="date")
+     * @ORM\Column(name="date_created", type="datetime")
      */
     public $dateCreated;
 
