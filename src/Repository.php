@@ -118,7 +118,7 @@ class Repository
 
                     if (\Doctrine\DBAL\Types\Type::hasType($type)) {
                         $type = \Doctrine\DBAL\Types\Type::getType($type);
-                        $entity->{$key} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
+                        $entity->{$fieldName} = $type->convertToPHPValue($value, $this->em->getConnection()->getDatabasePlatform());
                     } else {
                         throw new \RuntimeException('Unsupported type: '. $type . ' for ' . $key);
 //                        $entity->{$key} = $value;
