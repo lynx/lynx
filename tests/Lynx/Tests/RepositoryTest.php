@@ -13,7 +13,7 @@ class RepositoryTest extends TestCase
     public function testGetOneMethodSuccessForUserEntity()
     {
         /** @var \Lynx\Repository $repository */
-        $repository = $this->em->getRepository('Model\User');
+        $repository = $this->em->getRepository(User::class);
 
         /** @var User $result */
         $result = $repository->getOne(1);
@@ -28,7 +28,7 @@ class RepositoryTest extends TestCase
     public function testGetOneMethodNotFoundForUserEntity()
     {
         /** @var \Lynx\Repository $repository */
-        $repository = $this->em->getRepository('Model\User');
+        $repository = $this->em->getRepository(User::class);
         static::assertNull($repository->getOne(100000000));
     }
 }
