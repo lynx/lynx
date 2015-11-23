@@ -38,7 +38,7 @@ class EntityManager
 
     /**
      * @param Connection $connection
-     * @param Cache $cache
+     * @param Configuration $configuration
      */
     public function __construct(Connection $connection, Configuration $configuration)
     {
@@ -93,7 +93,7 @@ class EntityManager
     }
 
     /**
-     * @param $className
+     * @param string $className
      * @return object
      */
     public function getObject($className)
