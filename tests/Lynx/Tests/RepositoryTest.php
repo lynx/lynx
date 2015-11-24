@@ -18,7 +18,7 @@ class RepositoryTest extends TestCase
         /** @var User $result */
         $userOne = $repository->getOne(1);
         static::assertSuccessUser($userOne);
-        static::assertSame(1, $userTwo->id);
+        static::assertSame(1, $userOne->id);
 
         /** @var User $result */
         $userTwo = $repository->getOne(2);
