@@ -41,4 +41,16 @@ class RepositoryTest extends TestCase
         static::assertInstanceOf(DateTime::class, $result->dateCreated);
         static::assertInternalType('integer', $result->groupId);
     }
+
+    public function testFindByWithoutParametersForUserEntity()
+    {
+        /** @var \Lynx\Repository $repository */
+        $repository = $this->em->getRepository(User::class);
+        /** @var User[] $result */
+        $result = $repository->findBy([]);
+
+        foreach ($result as $user) {
+            static::assertSuccessUser($user);
+        }
+    }
 }
