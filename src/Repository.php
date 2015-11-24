@@ -35,12 +35,13 @@ class Repository
     {
         $className = $this->name;
 
+        /** @var ClassMetadata $metaData */
         $metaData = $this->em->getMetadataFactory()
             ->getMetadataFor($className);
 
         $queryResult = $this->em->createQueryBuilder()
             ->select('*')
-            ->from($metaData->table['name'])
+            ->from($metaData->getTableName())
             ->where('id = :id')
             ->setParameter('id', $id)
             ->setMaxResults(1)
@@ -59,12 +60,13 @@ class Repository
     {
         $className = $this->name;
 
+        /** @var ClassMetadata $metaData */
         $metaData = $this->em->getMetadataFactory()
             ->getMetadataFor($className);
 
         $qb = $this->em->createQueryBuilder()
             ->select('*')
-            ->from($metaData->table['name']);
+            ->from($metaData->getTableName());
 
         if ($orderBy) {
             foreach ($orderBy as $field => $type) {
