@@ -18,12 +18,12 @@ class RepositoryTest extends TestCase
         /** @var User $result */
         $userOne = $repository->getOne(1);
         static::assertSuccessUser($userOne);
+        static::assertSame(1, $userTwo->id);
 
         /** @var User $result */
         $userTwo = $repository->getOne(2);
         static::assertSuccessUser($userTwo);
-
-        static::assertNotEquals(spl_object_hash($userOne), spl_object_hash($userTwo));
+        static::assertSame(2, $userTwo->id);
     }
 
     public function testGetOneMethodNotFoundForUserEntity()
