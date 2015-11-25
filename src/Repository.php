@@ -56,13 +56,9 @@ class Repository
     {
         $className = $this->className;
 
-        /** @var ClassMetadata $metaData */
-        $metaData = $this->em->getMetadataFactory()
-            ->getMetadataFor($className);
-
         $qb = $this->em->createQueryBuilder()
             ->select('*')
-            ->from($metaData->getTableName());
+            ->from($this->metaData->getTableName());
 
         if ($criteria) {
             foreach ($criteria as $field => $type) {
@@ -90,7 +86,7 @@ class Repository
         $entity = $this->em->getObject($className);
 
         foreach ($queryResult as $row) {
-            $result[] = $this->hydrate(clone $entity, $row, $metaData);
+            $result[] = $this->hydrate(clone $entity, $row);
         }
 
         return $result;
@@ -129,24 +125,23 @@ class Repository
         }
 
         $entity = $this->em->getObject($this->className);
-        return $this->hydrate($entity, $queryResult, $this->metaData);
+        return $this->hydrate($entity, $queryResult);
     }
 
     /**
      * @param object $entity
      * @param array $queryResult
-     * @param ClassMetadata $metaData
      * @return object
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\ORM\Mapping\MappingException
      */
-    public function hydrate($entity, $queryResult, ClassMetadata $metaData)
+    public function hydrate($entity, $queryResult)
     {
         $platform = $this->em->getConnection()->getDatabasePlatform();
 
         foreach ($queryResult as $columnName => $value) {
-            $fieldName = $metaData->getFieldForColumn($columnName);
-            $typeForField = $metaData->getTypeOfField($fieldName);
+            $fieldName = $this->metaData->getFieldForColumn($columnName);
+            $typeForField = $this->metaData->getTypeOfField($fieldName);
 
             if ($typeForField) {
                 $type = Type::getType($typeForField);
