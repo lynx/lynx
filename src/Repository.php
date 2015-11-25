@@ -84,6 +84,7 @@ class Repository
         }
 
         $queryResult = $qb->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->execute()
             ->fetchAll();
 
