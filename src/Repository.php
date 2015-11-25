@@ -21,10 +21,19 @@ class Repository
      */
     protected $className;
 
+    /**
+     * @var ClassMetadata
+     */
+    protected $metaData;
+
     public function __construct(EntityManager $em, $className)
     {
         $this->em = $em;
         $this->className = $className;
+
+        $this->metaData = $this->em
+            ->getMetadataFactory()
+            ->getMetadataFor($this->className);
     }
 
     /**
@@ -33,13 +42,9 @@ class Repository
      */
     public function getOne($id)
     {
-        /** @var ClassMetadata $metaData */
-        $metaData = $this->em->getMetadataFactory()
-            ->getMetadataFor($this->className);
-
         $queryResult = $this->em->createQueryBuilder()
             ->select('*')
-            ->from($metaData->getTableName())
+            ->from($this->metaData->getTableName())
             ->where('id = :id')
             ->setParameter('id', $id)
             ->setMaxResults(1)
@@ -51,7 +56,7 @@ class Repository
         }
 
         $entity = $this->em->getObject($this->className);
-        return $this->hydrate($entity, $queryResult, $metaData);
+        return $this->hydrate($entity, $queryResult, $this->metaData);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -97,13 +102,9 @@ class Repository
      */
     public function count()
     {
-        /** @var ClassMetadata $metaData */
-        $metaData = $this->em->getMetadataFactory()
-            ->getMetadataFor($this->className);
-
         $qb = $this->em->createQueryBuilder()
             ->select('count(*)')
-            ->from($metaData->getTableName());
+            ->from($this->metaData->getTableName());
 
         $queryResult = $qb->setMaxResults(1)
             ->execute()
