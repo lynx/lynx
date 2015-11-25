@@ -19,12 +19,12 @@ class Repository
     /**
      * @var string
      */
-    protected $name;
+    protected $className;
 
-    public function __construct(EntityManager $em, $name)
+    public function __construct(EntityManager $em, $className)
     {
         $this->em = $em;
-        $this->name = $name;
+        $this->className = $className;
     }
 
     /**
@@ -33,11 +33,9 @@ class Repository
      */
     public function getOne($id)
     {
-        $className = $this->name;
-
         /** @var ClassMetadata $metaData */
         $metaData = $this->em->getMetadataFactory()
-            ->getMetadataFor($className);
+            ->getMetadataFor($this->className);
 
         $queryResult = $this->em->createQueryBuilder()
             ->select('*')
@@ -52,13 +50,13 @@ class Repository
             return null;
         }
 
-        $entity = $this->em->getObject($className);
+        $entity = $this->em->getObject($this->className);
         return $this->hydrate($entity, $queryResult, $metaData);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $className = $this->name;
+        $className = $this->className;
 
         /** @var ClassMetadata $metaData */
         $metaData = $this->em->getMetadataFactory()
@@ -99,11 +97,9 @@ class Repository
      */
     public function count()
     {
-        $className = $this->name;
-
         /** @var ClassMetadata $metaData */
         $metaData = $this->em->getMetadataFactory()
-            ->getMetadataFor($className);
+            ->getMetadataFor($this->className);
 
         $qb = $this->em->createQueryBuilder()
             ->select('count(*)')
