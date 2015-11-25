@@ -33,6 +33,16 @@ class RepositoryTest extends TestCase
         static::assertNull($repository->getOne(100000000));
     }
 
+    public function testCountMethodForUserEntity()
+    {
+        /** @var \Lynx\Repository $repository */
+        $repository = $this->em->getRepository(User::class);
+        $result = $repository->count();
+
+        static::assertInternalType('integer', $result);
+        static::assertTrue($result > 0);
+    }
+
     protected static function assertSuccessUser($result)
     {
         static::assertInstanceOf(User::class, $result);

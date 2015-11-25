@@ -94,6 +94,29 @@ class Repository
     }
 
     /**
+     * @return integer
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
+     */
+    public function count()
+    {
+        $className = $this->name;
+
+        /** @var ClassMetadata $metaData */
+        $metaData = $this->em->getMetadataFactory()
+            ->getMetadataFor($className);
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('count(*)')
+            ->from($metaData->getTableName());
+
+        $queryResult = $qb->setMaxResults(1)
+            ->execute()
+            ->fetchColumn();
+
+        return (int) $queryResult;
+    }
+
+    /**
      * @param object $entity
      * @param array $queryResult
      * @param ClassMetadata $metaData
