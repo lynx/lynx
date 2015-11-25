@@ -5,6 +5,7 @@
 
 namespace Lynx;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use RuntimeException;
@@ -42,21 +43,13 @@ class Repository
      */
     public function getOne($id)
     {
-        $queryResult = $this->em->createQueryBuilder()
+        $queryBuilder = $this->em->createQueryBuilder()
             ->select('*')
             ->from($this->metaData->getTableName())
             ->where('id = :id')
-            ->setParameter('id', $id)
-            ->setMaxResults(1)
-            ->execute()
-            ->fetch();
+            ->setParameter('id', $id);
 
-        if (!$queryResult) {
-            return null;
-        }
-
-        $entity = $this->em->getObject($this->className);
-        return $this->hydrate($entity, $queryResult, $this->metaData);
+        return $this->findOneByQueryBuilder($queryBuilder);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -118,6 +111,25 @@ class Repository
             ->fetchColumn();
 
         return (int) $queryResult;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @return null|object
+     */
+    public function findOneByQueryBuilder(QueryBuilder $queryBuilder)
+    {
+        $queryResult = $queryBuilder
+            ->setMaxResults(1)
+            ->execute()
+            ->fetch();
+
+        if (!$queryResult) {
+            return null;
+        }
+
+        $entity = $this->em->getObject($this->className);
+        return $this->hydrate($entity, $queryResult, $this->metaData);
     }
 
     /**
