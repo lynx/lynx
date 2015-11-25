@@ -71,9 +71,15 @@ class Repository
             ->select('*')
             ->from($metaData->getTableName());
 
+        if ($criteria) {
+            foreach ($criteria as $field => $type) {
+                $qb->andWhere($field, $type);
+            }
+        }
+
         if ($orderBy) {
             foreach ($orderBy as $field => $type) {
-                $qb->orderBy($field, $type);
+                $qb->addOrderBy($field, $type);
             }
         }
 
