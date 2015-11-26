@@ -21,7 +21,7 @@
 
 	<testsuites>
 		<testsuite name="Base Test Suite">
-			<directory>./tests/Lynx</directory>
+			<directory>./../Lynx</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>
