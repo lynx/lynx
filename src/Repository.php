@@ -52,6 +52,30 @@ class Repository
         return $this->findOneByQueryBuilder($queryBuilder);
     }
 
+    public function findOneBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('*')
+            ->from($this->metaData->getTableName());
+
+        if ($criteria) {
+            foreach ($criteria as $field => $type) {
+                $qb->andWhere($field, $type);
+            }
+        }
+
+        if ($orderBy) {
+            foreach ($orderBy as $field => $type) {
+                $qb->addOrderBy($field, $type);
+            }
+        }
+
+        $qb->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        return $this->findOneByQueryBuilder($qb);
+    }
+
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $className = $this->className;
