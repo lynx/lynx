@@ -92,8 +92,6 @@ class Repository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $className = $this->className;
-
         $qb = $this->em->createQueryBuilder()
             ->select('*')
             ->from($this->metaData->getTableName());
@@ -121,7 +119,7 @@ class Repository
 
         $result = [];
 
-        $entity = $this->em->getObject($className);
+        $entity = $this->em->getObject($this->className);
 
         foreach ($queryResult as $row) {
             $result[] = $this->hydrate(clone $entity, $row);
