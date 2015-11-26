@@ -31,9 +31,9 @@ class CachedRepository extends Repository
     /**
      * @param array $criteria
      * @param array|null $orderBy
-     * @param null $limit
-     * @param null $offset
-     * @return array|mixed|null
+     * @param integer|null $limit
+     * @param integer|null $offset
+     * @return array|null
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
