@@ -14,7 +14,7 @@ class CachedRepository extends Repository
     public function getOne($id)
     {
         $cache = $this->em->getCache();
-        $cacheKey = $this->name . $id;
+        $cacheKey = $this->className . $id;
 
         if ($cache->contains($cacheKey)) {
             return $cache->fetch($cacheKey);
@@ -38,7 +38,7 @@ class CachedRepository extends Repository
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $cache = $this->em->getCache();
-        $cacheKey = $this->name . '-';
+        $cacheKey = $this->className . '-';
 
         if ($criteria) {
             $cacheKey .= implode(',', $criteria);
