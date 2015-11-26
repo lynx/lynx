@@ -43,6 +43,22 @@ class RepositoryTest extends TestCase
         static::assertTrue($result > 0);
     }
 
+    public function testRefreshMethodForUserEntity()
+    {
+        /** @var \Lynx\Repository $repository */
+        $repository = $this->em->getRepository(User::class);
+
+        $entity = $repository->getOne(1);
+        static::assertSuccessUser($entity);
+        static::assertSame(1, $entity->id);
+        $splHash = spl_object_hash($entity);
+
+        $entity = $repository->refresh($entity);
+        static::assertSuccessUser($entity);
+        static::assertSame(1, $entity->id);
+        static::assertSame($splHash, spl_object_hash($entity));
+    }
+
     protected static function assertSuccessUser($result)
     {
         static::assertInstanceOf(User::class, $result);

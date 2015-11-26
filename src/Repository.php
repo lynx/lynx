@@ -93,6 +93,29 @@ class Repository
     }
 
     /**
+     * @param object $entity
+     * @return object
+     */
+    public function refresh($entity)
+    {
+        $column = $this->metaData->getIdentifier()[0];
+
+        $queryResult = $this->em->createQueryBuilder()
+            ->select('*')
+            ->from($this->metaData->getTableName())
+            ->where($column . ' = :id')
+            ->setParameter('id', $entity->{$column})
+            ->execute()
+            ->fetch();
+
+        if (!$queryResult) {
+            throw new RuntimeException('Cannot refresh entity with ' . $column . ' = ' . $entity->{$column});
+        }
+
+        return $this->hydrate($entity, $queryResult);
+    }
+
+    /**
      * @return integer
      * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      */
