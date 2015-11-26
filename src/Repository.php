@@ -52,6 +52,13 @@ class Repository
         return $this->findOneByQueryBuilder($queryBuilder);
     }
 
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param integer|null $limit
+     * @param integer|null $offset
+     * @return null|object
+     */
     public function findOneBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this->em->createQueryBuilder()
@@ -76,6 +83,13 @@ class Repository
         return $this->findOneByQueryBuilder($qb);
     }
 
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param integer|null $limit
+     * @param integer|null $offset
+     * @return array|null
+     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $className = $this->className;
