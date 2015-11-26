@@ -212,4 +212,12 @@ class Repository
 
         return $entity;
     }
+
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
 }
