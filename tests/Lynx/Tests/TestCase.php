@@ -20,6 +20,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $configuration = new Configuration();
+        $configuration->setResultCacheImpl(
+            new \Doctrine\Common\Cache\ArrayCache()
+        );
         $configuration->setMetadataDriverImpl(
             new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
                 new AnnotationReader(),
