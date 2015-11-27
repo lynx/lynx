@@ -108,24 +108,10 @@ class Repository
             }
         }
 
-        $queryResult = $qb->setMaxResults($limit)
-            ->setFirstResult($offset)
-            ->execute()
-            ->fetchAll();
+        $qb->setMaxResults($limit)
+            ->setFirstResult($offset);
 
-        if (!$queryResult) {
-            return null;
-        }
-
-        $result = [];
-
-        $entity = $this->em->getObject($this->className);
-
-        foreach ($queryResult as $row) {
-            $result[] = $this->hydrate(clone $entity, $row);
-        }
-
-        return $result;
+        return $this->findByQueryBuilder($qb);
     }
 
     /**
@@ -185,6 +171,31 @@ class Repository
 
         $entity = $this->em->getObject($this->className);
         return $this->hydrate($entity, $queryResult);
+    }
+    
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @return array|null
+     */
+    public function findByQueryBuilder(QueryBuilder $queryBuilder)
+    {
+        $queryResult = $queryBuilder
+            ->execute()
+            ->fetchAll();
+
+        if (!$queryResult) {
+            return null;
+        }
+
+        $result = [];
+
+        $entity = $this->em->getObject($this->className);
+
+        foreach ($queryResult as $row) {
+            $result[] = $this->hydrate(clone $entity, $row);
+        }
+
+        return $result;
     }
 
     /**
