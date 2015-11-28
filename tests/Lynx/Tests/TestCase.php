@@ -23,6 +23,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $configuration->setResultCacheImpl(
             new \Doctrine\Common\Cache\ArrayCache()
         );
+
         $configuration->setMetadataDriverImpl(
             new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
                 new AnnotationReader(),
@@ -33,7 +34,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $connection = \Doctrine\DBAL\DriverManager::getConnection(
             array(
                 'driver' => $GLOBALS['db_type'],
-                'host' => 'localhost',
+                'host' => $GLOBALS['db_host'],
                 'dbname' => $GLOBALS['db_name'],
                 'user' => $GLOBALS['db_username'],
                 'password' => $GLOBALS['db_password']
