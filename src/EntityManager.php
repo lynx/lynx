@@ -17,11 +17,6 @@ class EntityManager
     protected $connection;
 
     /**
-     * @var Cache
-     */
-    protected $cache;
-
-    /**
      * @var Repository[]
      */
     protected $repositories;
@@ -44,7 +39,6 @@ class EntityManager
     {
         $this->connection = $connection;
         $this->configuration = $configuration;
-        $this->cache = $configuration->getResultCacheImpl();
         $this->metadataFactory = new ClassMetadataFactory($this);
     }
 
@@ -107,7 +101,7 @@ class EntityManager
      */
     public function getCache()
     {
-        return $this->cache;
+        return $this->configuration->getResultCacheImpl();
     }
 
     /**
