@@ -5,6 +5,7 @@
 
 namespace Lynx;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -81,6 +82,21 @@ class Repository
             ->setFirstResult($offset);
 
         return $this->findOneByQueryBuilder($qb);
+    }
+
+    /**
+     * @param array $ids
+     * @return array|null
+     */
+    public function findByIds(array $ids)
+    {
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('*')
+            ->from($this->metaData->getTableName())
+            ->where('id in (:id)')
+            ->setParameter('id', $ids, Connection::PARAM_INT_ARRAY);
+
+        return $this->findByQueryBuilder($queryBuilder);
     }
 
     /**
