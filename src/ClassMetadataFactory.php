@@ -21,7 +21,7 @@ use ReflectionException;
 class ClassMetadataFactory extends AbstractClassMetadataFactory
 {
     /**
-     * @var EntityManagerInterface|null
+     * @var EntityManager|null
      */
     private $em;
 
@@ -63,7 +63,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
     protected function initialize()
     {
         $this->driver = $this->em->getConfiguration()->getMetadataDriverImpl();
-//        $this->evm = $this->em->getEventManager();
         $this->initialized = true;
     }
 
