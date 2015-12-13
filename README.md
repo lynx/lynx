@@ -6,6 +6,29 @@ Lynx
 
 > An awesome Mapper on top of Doctrine 2 components
 
+## How to work?
+
+First you need to setup EntityManager ($em) :
+
+```php
+$configuration = new Configuration();
+$configuration->setResultCacheImpl($di->getCache());
+$configuration->setMetadataDriverImpl(
+    new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
+        new AnnotationReader(),
+        realpath(APP_ROOT_PATH . '/src/BlaBla/User/Model/')
+    )
+);
+$configuration->setMetadataCacheImpl(
+    new \Doctrine\Common\Cache\ApcCache()
+);
+
+$em = new \Lynx\EntityManager(
+    $di->getDb(),
+    $configuration
+);
+```
+
 ## Testing
 
 #### PostgresSQL
