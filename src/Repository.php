@@ -39,6 +39,20 @@ class Repository
     }
 
     /**
+     * Find all entities
+     *
+     * @return array|null
+     */
+    public function findAll()
+    {
+        $qb = $this->em->createQueryBuilder()
+            ->select('*')
+            ->from($this->metaData->getTableName());
+
+        return $this->findByQueryBuilder($qb);
+    }
+
+    /**
      * @param $id
      * @return object|null
      */
