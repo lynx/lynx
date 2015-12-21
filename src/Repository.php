@@ -56,7 +56,7 @@ class Repository
      * @param $id
      * @return object|null
      */
-    public function getOne($id)
+    public function findOne($id)
     {
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('*')
@@ -65,6 +65,14 @@ class Repository
             ->setParameter('id', $id);
 
         return $this->findOneByQueryBuilder($queryBuilder);
+    }
+
+    /**
+     * @deprecated 
+     */
+    public function getOne($id)
+    {
+        return $this->findOne($id);
     }
 
     /**
