@@ -11,7 +11,7 @@ class CachedRepository extends Repository
      * @param integer $id
      * @return object|null
      */
-    public function getOne($id)
+    public function findOne($id)
     {
         $cache = $this->em->getCache();
         $cacheKey = $this->className . ':' . $id;
@@ -20,7 +20,7 @@ class CachedRepository extends Repository
             return $cache->fetch($cacheKey);
         }
 
-        $result = parent::getOne($id);
+        $result = parent::findOne($id);
         if ($result) {
             $cache->save($cacheKey, $result, 60*10);
         }
