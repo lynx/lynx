@@ -68,14 +68,6 @@ class Repository
     }
 
     /**
-     * @deprecated 
-     */
-    public function getOne($id)
-    {
-        return $this->findOne($id);
-    }
-
-    /**
      * @param array $criteria
      * @param array|null $orderBy
      * @param integer|null $limit
