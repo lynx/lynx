@@ -65,7 +65,7 @@ class EntityManager
      */
     public function find($className, $id)
     {
-        return $this->getRepository($className)->getOne($id);
+        return $this->getRepository($className)->findOne($id);
     }
 
     /**
