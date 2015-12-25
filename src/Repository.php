@@ -284,4 +284,19 @@ class Repository
             $this
         );
     }
+
+    /**
+     * @param int $limit
+     * @return RepositoryPaginator
+     */
+    public function getPagination($limit = 100)
+    {
+        return new RepositoryPaginator(
+            $this->em->createQueryBuilder()
+                ->select('*')
+                ->from($this->metaData->getTableName()),
+            $this,
+            $limit
+        );
+    }
 }
