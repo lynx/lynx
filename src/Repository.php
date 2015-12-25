@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Lynx\Pagination\RepositoryPaginator;
 use RuntimeException;
 
 class Repository
@@ -262,7 +263,6 @@ class Repository
         return $this->className;
     }
 
-
     /**
      * @return QueryBuilder
      */
@@ -271,5 +271,17 @@ class Repository
         return $this->em->createQueryBuilder()
             ->select('*')
             ->from($this->metaData->getTableName());
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @return RepositoryPaginator
+     */
+    public function createPagination(QueryBuilder $queryBuilder)
+    {
+        return new RepositoryPaginator(
+            $queryBuilder,
+            $this
+        );
     }
 }
