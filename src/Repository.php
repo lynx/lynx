@@ -261,4 +261,15 @@ class Repository
     {
         return $this->className;
     }
+
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createQueryBuilder()
+    {
+        return $this->em->createQueryBuilder()
+            ->select('*')
+            ->from($this->metaData->getTableName());
+    }
 }
