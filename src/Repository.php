@@ -29,6 +29,10 @@ class Repository
      */
     protected $metaData;
 
+    /**
+     * @param EntityManager $em
+     * @param string $className
+     */
     public function __construct(EntityManager $em, $className)
     {
         $this->em = $em;
