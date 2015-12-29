@@ -29,6 +29,15 @@ $em = new \Lynx\EntityManager(
 );
 ```
 
+### Working with repository
+
+You can get a `Repository` for `Model` by using method `getRepository` from `EntityManager`
+
+```php
+$repository = $em->getRepository(User::class);
+```
+
+
 ## Testing
 
 #### PostgresSQL
