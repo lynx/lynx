@@ -31,12 +31,19 @@ $em = new \Lynx\EntityManager(
 
 ### Working with repository
 
-You can get a `Repository` for `Model` by using method `getRepository` from `EntityManager`
+You can get a `Repository` for `Model` by using method `getRepository` from `EntityManager`:
 
 ```php
 $repository = $em->getRepository(User::class);
 ```
 
+For example, you can get one row by using:
+
+```php
+$repository = $em->getRepository(User::class);
+/** User|null $user */
+$user = $repository->findOne(1);
+```
 
 ## Testing
 
