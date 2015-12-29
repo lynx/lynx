@@ -45,6 +45,13 @@ $repository = $em->getRepository(User::class);
 $user = $repository->findOne(1);
 ```
 
+You can count all rows from table:
+
+```php
+$repository = $em->getRepository(User::class);
+$count = $repository->count();
+```
+
 ## Testing
 
 #### PostgresSQL
