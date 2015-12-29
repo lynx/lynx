@@ -27,11 +27,11 @@ class CachedRepositoryTest extends TestCase
         static::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 1; $i < $repository->count(); $i++) {
             /** @var User $entity */
-            $entity = $repository->findOne(1);
+            $entity = $repository->findOne($i);
             static::assertSuccessUser($entity);
-            static::assertSame(1, $entity->id);
+            static::assertSame($i, $entity->id);
         }
     }
 
