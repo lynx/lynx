@@ -16,6 +16,8 @@ class RepositoryPaginatorTest extends TestCase
         $count = 0;
 
         foreach ($users as $user) {
+            self::assertSuccessUser($user);
+
             $count++;
         }
 
@@ -34,6 +36,7 @@ class RepositoryPaginatorTest extends TestCase
 
         foreach ($users as $user) {
             static::assertEquals($page, $users->getPage());
+            self::assertSuccessUser($user);
 
             $count++;
             $page++;
@@ -55,6 +58,7 @@ class RepositoryPaginatorTest extends TestCase
 
         foreach ($users as $key => $user) {
             static::assertEquals($page, $users->getPage());
+            self::assertSuccessUser($user);
 
             $count++;
             if ($key % 2) {
@@ -78,6 +82,7 @@ class RepositoryPaginatorTest extends TestCase
 
         foreach ($users as $key => $user) {
             static::assertEquals(1, $users->getPage());
+            self::assertSuccessUser($user);
 
             $count++;
         }

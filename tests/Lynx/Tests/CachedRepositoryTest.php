@@ -60,34 +60,25 @@ class CachedRepositoryTest extends TestCase
         $repository = $this->getRepository();
 
         $entity = $repository->findOne(1);
-        static::assertSuccessUser($entity);
+        self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         $splHash = spl_object_hash($entity);
 
         $entity = $repository->refresh($entity);
-        static::assertSuccessUser($entity);
+        self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         static::assertSame($splHash, spl_object_hash($entity));
 
 
         $entity = $repository->findOne(1);
-        static::assertSuccessUser($entity);
+        self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         $splHash = spl_object_hash($entity);
 
         $entity = $repository->refresh($entity);
-        static::assertSuccessUser($entity);
+        self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         static::assertSame($splHash, spl_object_hash($entity));
-    }
-
-    protected static function assertSuccessUser($result)
-    {
-        static::assertInstanceOf(User::class, $result);
-        static::assertInternalType('integer', $result->id);
-        static::assertInternalType('string', $result->name);
-        static::assertInstanceOf(DateTime::class, $result->dateCreated);
-        static::assertInternalType('integer', $result->groupId);
     }
 
     public function testFindByWithoutParametersForUserEntity()

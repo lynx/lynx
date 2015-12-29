@@ -6,9 +6,11 @@
 
 namespace Lynx\Tests;
 
+use DateTime;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Configuration;
 use Lynx\EntityManager;
+use Model\User;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -49,5 +51,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $connection,
             $configuration
         );
+    }
+
+    public static function assertSuccessUser(User $entity)
+    {
+        static::assertInternalType('integer', $entity->id);
+        static::assertInternalType('string', $entity->name);
+        static::assertInstanceOf(DateTime::class, $entity->dateCreated);
+        static::assertInternalType('integer', $entity->groupId);
     }
 }
