@@ -139,4 +139,12 @@ class RepositoryPaginator implements Iterator
     {
         $this->total = $total;
     }
+
+    /**
+     * @return int
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
 }
