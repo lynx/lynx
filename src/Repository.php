@@ -112,7 +112,7 @@ class Repository
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('*')
             ->from($this->metaData->getTableName())
-            ->where('id in (:id)')
+            ->where('id IN (:id)')
             ->setParameter('id', $ids, Connection::PARAM_INT_ARRAY);
 
         return $this->findByQueryBuilder($queryBuilder);
@@ -179,7 +179,7 @@ class Repository
     public function count()
     {
         $qb = $this->em->createQueryBuilder()
-            ->select('count(*)')
+            ->select('COUNT(*)')
             ->from($this->metaData->getTableName());
 
         $queryResult = $qb->setMaxResults(1)
