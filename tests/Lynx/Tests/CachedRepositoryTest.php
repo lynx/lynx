@@ -22,16 +22,16 @@ class CachedRepositoryTest extends TestCase
     {
         $repository = $this->getRepository();
 
-        /** @var User $result */
-        $userOne = $repository->findOne(1);
-        static::assertSuccessUser($userOne);
-        static::assertSame(1, $userOne->id);
+        /** @var User $entity */
+        $entity = $repository->findOne(1);
+        static::assertSuccessUser($entity);
+        static::assertSame(1, $entity->id);
 
         for ($i = 0; $i < 5; $i++) {
-            /** @var User $result */
-            $userOne = $repository->findOne(1);
-            static::assertSuccessUser($userOne);
-            static::assertSame(1, $userOne->id);
+            /** @var User $entity */
+            $entity = $repository->findOne(1);
+            static::assertSuccessUser($entity);
+            static::assertSame(1, $entity->id);
         }
     }
 
@@ -59,22 +59,25 @@ class CachedRepositoryTest extends TestCase
     {
         $repository = $this->getRepository();
 
+        /** @var User $entity */
         $entity = $repository->findOne(1);
         self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         $splHash = spl_object_hash($entity);
 
+        /** @var User $entity */
         $entity = $repository->refresh($entity);
         self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         static::assertSame($splHash, spl_object_hash($entity));
 
-
+        /** @var User $entity */
         $entity = $repository->findOne(1);
         self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         $splHash = spl_object_hash($entity);
 
+        /** @var User $entity */
         $entity = $repository->refresh($entity);
         self::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);

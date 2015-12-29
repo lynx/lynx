@@ -53,6 +53,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param User $entity
+     */
     public static function assertSuccessUser(User $entity)
     {
         static::assertInternalType('integer', $entity->id);
