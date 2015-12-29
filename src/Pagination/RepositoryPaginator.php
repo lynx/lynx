@@ -107,7 +107,7 @@ class RepositoryPaginator implements Iterator
 
     public function valid()
     {
-        if (count($this->results) > $this->position + 1) {
+        if (count($this->results) >= $this->position + 1) {
             return true;
         }
 
