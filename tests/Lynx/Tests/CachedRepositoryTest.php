@@ -23,13 +23,13 @@ class CachedRepositoryTest extends TestCase
         $repository = $this->getRepository();
 
         /** @var User $result */
-        $userOne = $repository->getOne(1);
+        $userOne = $repository->findOne(1);
         static::assertSuccessUser($userOne);
         static::assertSame(1, $userOne->id);
 
         for ($i = 0; $i < 5; $i++) {
             /** @var User $result */
-            $userOne = $repository->getOne(1);
+            $userOne = $repository->findOne(1);
             static::assertSuccessUser($userOne);
             static::assertSame(1, $userOne->id);
         }
@@ -38,8 +38,8 @@ class CachedRepositoryTest extends TestCase
     public function testGetOneMethodNotFoundForUserEntity()
     {
         $repository = $this->getRepository();
-        static::assertNull($repository->getOne(100000000));
-        static::assertNull($repository->getOne(100000000));
+        static::assertNull($repository->findOne(100000000));
+        static::assertNull($repository->findOne(100000000));
     }
 
     public function testCountMethodForUserEntity()
@@ -59,7 +59,7 @@ class CachedRepositoryTest extends TestCase
     {
         $repository = $this->getRepository();
 
-        $entity = $repository->getOne(1);
+        $entity = $repository->findOne(1);
         static::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         $splHash = spl_object_hash($entity);
@@ -70,7 +70,7 @@ class CachedRepositoryTest extends TestCase
         static::assertSame($splHash, spl_object_hash($entity));
 
 
-        $entity = $repository->getOne(1);
+        $entity = $repository->findOne(1);
         static::assertSuccessUser($entity);
         static::assertSame(1, $entity->id);
         $splHash = spl_object_hash($entity);
