@@ -52,8 +52,12 @@ class RepositoryPaginator implements Iterator
         $this->queryBuilder = $queryBuilder;
         $this->repository = $repository;
 
-        $this->getTotal();
-        $this->fetchPageResults();
+        /**
+         * First, We need to check the number of total rows
+         */
+        if ($this->getTotal()) {
+            $this->fetchPageResults();
+        }
     }
 
     /**
