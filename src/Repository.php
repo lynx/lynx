@@ -303,4 +303,12 @@ class Repository
             $limit
         );
     }
+    
+    /**
+     * @return EntityManager
+     */
+    public function getEm()
+    {
+        return $this->em;
+    }
 }
