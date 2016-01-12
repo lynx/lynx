@@ -132,8 +132,9 @@ class Repository
             ->from($this->metaData->getTableName());
 
         if ($criteria) {
-            foreach ($criteria as $field => $type) {
-                $qb->andWhere($field, $type);
+            foreach ($criteria as $field => $value) {
+                $qb->andWhere($field . ' = :' . $field)
+                    ->setParameter($field, $value);
             }
         }
 
