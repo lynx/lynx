@@ -312,4 +312,12 @@ class Repository
     {
         return $this->em;
     }
+    
+    /**
+     * @return Persister\DBAL
+     */
+    public function getPersister()
+    {
+        return new Persister\DBAL($this->em, $this->metaData);
+    }
 }
