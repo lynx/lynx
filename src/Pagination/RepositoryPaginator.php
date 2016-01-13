@@ -74,8 +74,13 @@ class RepositoryPaginator implements Iterator
 
         $where = $this->queryBuilder->getQueryPart('where');
         if ($where) {
-            foreach ($where as $part) {
-                $queryBuilder->andWhere($part);
+            $queryBuilder->add('where', (string) $where);
+        }
+
+        $parameters = $this->queryBuilder->getParameters();
+        if ($parameters) {
+            foreach ($parameters as $key => $value) {
+                $queryBuilder->setParameter($key, $value);
             }
         }
 
