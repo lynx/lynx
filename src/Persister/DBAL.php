@@ -60,10 +60,17 @@ class DBAL
      * @param string $column
      * @param mixed $value
      * @param mixed|integer $id
+     * @param integer|null $type
      * @return int
      */
-    public function updateFieldById($column, $value, $id)
+    public function updateFieldById($column, $value, $id, $type = null)
     {
+        $types = [];
+
+        if ($type) {
+            $types[$column] = $type;
+        }
+
         return $this->em->getConnection()->update(
             $this->metaData->getTableName(),
             [
@@ -71,7 +78,8 @@ class DBAL
             ],
             [
                 'id' => $id
-            ]
+            ],
+            $types
         );
     }
 
