@@ -8,13 +8,35 @@ namespace Lynx;
 class CachedRepository extends Repository
 {
     /**
-     * @param integer $id
+     * Get key of the cache by $id
+     *
+     * @param integer|string $id
+     * @return string
+     */
+    public function getCacheId($id)
+    {
+        return $this->className . ':' . $id;
+    }
+
+    /**
+     * Clear from the Cache storage
+     *
+     * @param integer|string $id
+     * @return bool
+     */
+    public function clearFromCacheById($id)
+    {
+        return $this->em->getCache()->delete($this->getCacheId($id));
+    }
+
+    /**
+     * @param integer|string $id
      * @return object|null
      */
     public function findOne($id)
     {
         $cache = $this->em->getCache();
-        $cacheKey = $this->className . ':' . $id;
+        $cacheKey = $this->getCacheId($id);
 
         if ($cache->contains($cacheKey)) {
             return $cache->fetch($cacheKey);
