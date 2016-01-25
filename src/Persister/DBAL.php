@@ -85,6 +85,41 @@ class DBAL
      * @return int
      * @throws \Doctrine\ORM\Mapping\MappingException
      */
+    public function insert($entity)
+    {
+        $data = [];
+
+        foreach ($this->metaData->getColumnNames() as $columnName) {
+            $fieldName = $this->metaData->getFieldForColumn($columnName);
+            $mapping = $this->metaData->getFieldMapping($fieldName);
+            if (isset($mapping['id']) || (isset($mapping['nullable']) && $mapping['nullable'])) {
+                continue;
+            }
+
+            $typeName = $this->metaData->getTypeOfColumn($fieldName);
+            $type = \Doctrine\DBAL\Types\Type::getType($typeName);
+
+            $value = $type->convertToDatabaseValue(
+                $entity->{$fieldName},
+                $this->em->getConnection()->getDatabasePlatform()
+            );
+
+            $types[$columnName] = $type->getBindingType();
+            $data[$columnName] = $value;
+        }
+
+        return $this->em->getConnection()->insert(
+            $this->metaData->getTableName(),
+            $data,
+            $types
+        );
+    }
+
+    /**
+     * @param object $entity
+     * @return int
+     * @throws \Doctrine\ORM\Mapping\MappingException
+     */
     public function update($entity)
     {
         $identifiers = [];
