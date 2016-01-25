@@ -45,11 +45,8 @@ class DBAL
                 $this->em->getConnection()->getDatabasePlatform()
             );
 
-            var_dump($value);
-//            die();
-            $data[$columnName] = $fieldValue;
+            $data[$columnName] = $value;
         }
-        die();
 
         return $data;
     }
@@ -92,21 +89,47 @@ class DBAL
     {
         $identifiers = [];
 
+        $types = [
+            'id' => \PDO::PARAM_INT
+        ];
+
         foreach ($this->metaData->getIdentifierColumnNames() as $columnName) {
+            $fieldName = $this->metaData->getFieldForColumn($columnName);
+
             $value = $this->metaData->getFieldValue(
                 $entity,
-                $this->metaData->getFieldForColumn($columnName)
+                $fieldName
             );
 
             $identifiers[$columnName] = $value;
         }
 
-        $updateSet = $this->prepareSet($entity);
+        $updateSet = [];
+
+        foreach ($this->metaData->getColumnNames() as $columnName) {
+            if (isset($identifiers[$columnName])) {
+                continue;
+            }
+
+            $fieldName = $this->metaData->getFieldForColumn($columnName);
+
+            $typeName = $this->metaData->getTypeOfColumn($fieldName);
+            $type = \Doctrine\DBAL\Types\Type::getType($typeName);
+
+            $value = $type->convertToDatabaseValue(
+                $entity->{$fieldName},
+                $this->em->getConnection()->getDatabasePlatform()
+            );
+
+            $types[$columnName] = $type->getBindingType();
+            $updateSet[$columnName] = $value;
+        }
 
         return $this->em->getConnection()->update(
             $this->metaData->getTableName(),
             $updateSet,
-            $identifiers
+            $identifiers,
+            $types
         );
     }
 }
