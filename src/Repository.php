@@ -320,4 +320,12 @@ class Repository
     {
         return new Persister\DBAL($this->em, $this->metaData);
     }
+    
+    /**
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->metaData->getTableName();
+    }
 }
