@@ -88,10 +88,16 @@ class DBAL
     public function insert($entity)
     {
         $data = [];
-
+        $idColumn = false;
+        
         foreach ($this->metaData->getColumnNames() as $columnName) {
             $fieldName = $this->metaData->getFieldForColumn($columnName);
             $mapping = $this->metaData->getFieldMapping($fieldName);
+            
+            if ($mapping['id']) {
+                $idColumn = $fieldName;
+            }
+            
             if (isset($mapping['id']) || (isset($mapping['nullable']) && $mapping['nullable'])) {
                 continue;
             }
@@ -108,11 +114,21 @@ class DBAL
             $data[$columnName] = $value;
         }
 
-        return $this->em->getConnection()->insert(
+        $result = $this->em->getConnection()->insert(
             $this->metaData->getTableName(),
             $data,
             $types
         );
+
+        if ($result) {
+            if ($idColumn) {
+                return $this->em->getConnection()->lastInsertId($this->metaData->getTableName() . '_id_seq');
+            }
+
+            return $result;
+        }
+
+        return false;
     }
 
     /**
