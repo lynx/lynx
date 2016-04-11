@@ -69,7 +69,15 @@ class RepositoryPaginator implements Iterator
             return $this->total;
         }
 
-        $queryBuilder = $this->repository->createQueryBuilder();
+        $queryBuilder = $this->repository->getEm()->createQueryBuilder();
+
+        $fromParts = $this->queryBuilder->getQueryPart('from');
+        if ($fromParts) {
+            foreach ($fromParts as $from) {
+                $queryBuilder->from($from['table'], $from['alias']);
+            }
+        }
+        
         $queryBuilder->select('COUNT(*)');
 
         $where = $this->queryBuilder->getQueryPart('where');
@@ -83,6 +91,8 @@ class RepositoryPaginator implements Iterator
                 $queryBuilder->setParameter($key, $value);
             }
         }
+
+        dump($queryBuilder->getSQL());
 
         return $this->total = $queryBuilder
             ->execute()
