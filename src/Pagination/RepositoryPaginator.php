@@ -92,8 +92,6 @@ class RepositoryPaginator implements Iterator
             }
         }
 
-        dump($queryBuilder->getSQL());
-
         return $this->total = $queryBuilder
             ->execute()
             ->fetchColumn();
