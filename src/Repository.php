@@ -328,4 +328,17 @@ class Repository
     {
         return $this->metaData->getTableName();
     }
+        
+    /**
+     * @param mixed $id
+     * @return int
+     */
+    public function deleteOne($id)
+    {
+        return $this->createQueryBuilder()
+            ->delete($this->metaData->getTableName())
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->execute();
+    }
 }
