@@ -88,18 +88,21 @@ class DBAL
     public function insert($entity)
     {
         $data = [];
+        $types = [];
         $idColumn = false;
         
         foreach ($this->metaData->getColumnNames() as $columnName) {
             $fieldName = $this->metaData->getFieldForColumn($columnName);
             $mapping = $this->metaData->getFieldMapping($fieldName);
             
-            if ($mapping['id']) {
-                $idColumn = $fieldName;
-            }
-            
-            if (isset($mapping['id']) || (isset($mapping['nullable']) && $mapping['nullable'])) {
-                continue;
+            if (isset($mapping['id'])) {
+                if ((isset($mapping['nullable']) && $mapping['nullable'])) {
+                    continue;
+                }
+
+                if (!$entity->{$fieldName}) {
+                    $idColumn = $fieldName;
+                }
             }
 
             $typeName = $this->metaData->getTypeOfColumn($fieldName);
